@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Data Visualizer</title>
+</head>
+<body>
+    <h1>Stock Data Visualizer</h1>
+
+    {% for message in get_flashed_messages() %}
+        <p style="color: red;">{{ message }}</p>
+    {% endfor %}
+
+    <form method="post">
+        <label>Choose Symbol:</label>
+        <select name="symbol">
+            <option value="">Select a Symbol</option>
+            {% for s in symbols %}
+                <option value="{{ s }}" {% if request.form.get('symbol') == s %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label>Choose Chart Type:</label>
+        <select name="chart_type">
+            <option value="">Select a Chart Type</option>
+            {% for c in chart_types %}
+                <option value="{{ c }}" {% if request.form.get('chart_type') == c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label>Choose Time Series:</label>
+        <select name="time_series">
+            <option value="">Select a Time Series</option>
+            {% for t in time_series %}
+                <option value="{{ t }}" {% if request.form.get('time_series') == t %}selected{% endif %}>{{ t }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label>Start Date:</label>
+        <input type="date" name="start_date" value="{{ request.form.get('start_date', '') }}"><br>
+
+        <label>End Date:</label>
+        <input type="date" name="end_date" value="{{ request.form.get('end_date', '') }}"><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if chart_html %}
+        {{ chart_html|safe }}
+    {% endif %}
+</body>
+</html>
